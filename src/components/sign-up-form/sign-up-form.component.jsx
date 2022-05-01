@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+  createAuthUserFromEmailPassword,
+  createUserDocFromAuth,
+} from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   displayName: "",
@@ -7,19 +11,39 @@ const defaultFormFields = {
   confirmPassword: "",
 };
 
-const SingUpForm = () => {
+const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
   console.log(formFields);
+  const clearFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("Passwords does not match");
+      return;
+    }
+    try {
+      const { user } = await createAuthUserFromEmailPassword(email, password);
+      console.log(user);
+      await createUserDocFromAuth(user, { displayName });
+      clearFormFields();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   return (
     <div>
       <h1>Sign up with email account</h1>
-      <form onSubmit={() => {}}>
+      <form onSubmit={handleSubmit}>
         <label>Display name</label>
         <input
           type="text"
@@ -62,4 +86,4 @@ const SingUpForm = () => {
   );
 };
 
-export default SingUpForm;
+export default SignUpForm;

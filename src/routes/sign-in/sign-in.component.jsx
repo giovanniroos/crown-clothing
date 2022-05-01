@@ -6,7 +6,8 @@ import {
   createUserDocFromAuth,
   signInWithGoogleRedirect,
 } from "../../utils/firebase/firebase.utils";
-import SingUpForm from "../../components/sign-up-form/sign-up.component";
+import SingUpForm from "../../components/sign-up-form/sign-up-form.component";
+
 
 const SignIn = () => {
   useEffect(() => {
