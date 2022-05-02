@@ -39,6 +39,11 @@ const SignUpForm = () => {
       clearFormFields();
     } catch (error) {
       console.log(error);
+      if (error.code === 'auth/email-already-in-use') {
+        alert('Cannot create user, email already in use');
+      } else {
+        console.log('user creation encountered an error', error);
+      }
     }
   };
   
